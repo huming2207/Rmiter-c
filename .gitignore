@@ -1,3 +1,6 @@
+# macOS Finder cache
+.DS_Store
+
 # Created by .ignore support plugin (hsz.mobi)
 ### C template
 # CMake cache
