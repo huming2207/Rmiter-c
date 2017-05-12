@@ -21,7 +21,7 @@ typedef struct course
 Course * create_course(char * title, char * activity_type, char * course_id,
                        char * start_time, char * end_time, char * classroom);
 
-void delete_course();
+void delete_course(Course * course);
 
 
 

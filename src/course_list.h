@@ -10,6 +10,7 @@
 typedef struct course_node
 {
     Course * course;
+    int id;
     struct course_node * previous_node;
     struct course_node * next_node;
     struct course_node * current_node;
@@ -17,15 +18,19 @@ typedef struct course_node
 
 typedef struct course_list
 {
-    Course * first_course;
-    Course * last_course;
-    Course * current_course;
+    CourseNode * first_course;
+    CourseNode * last_course;
+    CourseNode * current_course;
     int length;
 } CourseList;
 
 CourseList * create_course_list();
 
-CourseNode * create_course_node();
+CourseNode * create_course_node(int id, Course * course);
+
+CourseNode * add_course_to_node(Course * course, CourseNode * node);
+
+CourseNode * remove_course_from_node(Course * course, CourseNode * node);
 
 void delete_course_list(CourseList * list);
 
@@ -33,8 +38,8 @@ void delete_course_node(CourseNode * node);
 
 bool insert_node(CourseList * list, CourseNode * node);
 
-bool remove_node(CourseList * list, CourseNode * node);
+bool remove_current_node(CourseList * list);
 
-CourseNode * find_by_course_id(CourseNode * node, char * course_id);
+Course * find_by_course_id(CourseNode * node, char * course_id);
 
 #endif //RMITER_C_COURSE_LIST_H
