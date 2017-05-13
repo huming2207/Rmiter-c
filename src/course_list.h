@@ -40,6 +40,6 @@ bool insert_node(CourseList * list, CourseNode * node);
 
 bool remove_current_node(CourseList * list);
 
-Course * find_by_course_id(CourseNode * node, char * course_id);
+CourseNode * find_by_node_id(CourseList * list, int node_id);
 
 #endif //RMITER_C_COURSE_LIST_H

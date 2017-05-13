@@ -30,7 +30,7 @@ void delete_course_list(CourseList * list)
 
     while(current_node != NULL)
     {
-        free_course_node(current_node);
+        delete_course_node(current_node);
         current_node = current_node->next_node;
     }
 
@@ -58,7 +58,7 @@ CourseNode * create_course_node(int id, Course * course)
     return node;
 }
 
-void free_course_node(CourseNode * node)
+void delete_course_node(CourseNode * node)
 {
     /** If this node's array is not null, wipe it up too. */
     if(node->course != NULL)
@@ -76,7 +76,7 @@ bool insert_node(CourseList * list, CourseNode * node)
     CourseNode * previous_current;
 
     /** As it said above, if a node with an existed ID, then return false */
-    if (find_by_id(list, node->id) == NULL)
+    if (find_by_node_id(list, node->id) == NULL)
     {
         /** Get the "previous current" node */
         previous_current = list->current_course;
@@ -136,7 +136,7 @@ bool remove_current_node(CourseList * list)
             current_node->previous_node->next_node = current_node->next_node;
             current_node->next_node->previous_node = current_node->previous_node;
             list->current_course = current_node->next_node;
-            free_course_node(current_node);
+            delete_course_node(current_node);
         }
         else if(list->current_course->next_node == NULL && list->current_course->previous_node != NULL)
         {
@@ -145,7 +145,7 @@ bool remove_current_node(CourseList * list)
             current_node = list->current_course;
             current_node->previous_node->next_node = NULL;
             list->current_course = current_node->previous_node;
-            free_course_node(current_node);
+            delete_course_node(current_node);
         }
         else if(list->current_course->next_node != NULL && list->current_course->previous_node == NULL)
         {
@@ -154,12 +154,12 @@ bool remove_current_node(CourseList * list)
             current_node = list->current_course;
             current_node->next_node->previous_node = NULL;
             list->current_course = current_node->next_node;
-            free_course_node(current_node);
+            delete_course_node(current_node);
         }
         else
         {
             /** Situation #4 - Current node does not have both next node and previous node */
-            free_course_node(list->current_course);
+            delete_course_node(list->current_course);
         }
 
         /** Shrink the size of the list */
@@ -229,7 +229,7 @@ bool backward(CourseList * list, int backward)
     return true;
 }
 
-CourseNode * find_by_id(CourseList * list, int id)
+CourseNode * find_by_node_id(CourseList * list, int node_id)
 {
     /** Declare a node pointer and set to head position */
     CourseNode * node_query = list->first_course;
@@ -241,7 +241,7 @@ CourseNode * find_by_id(CourseList * list, int id)
     }
 
     /** If it's lucky enough and the this list's head node is what it wants, simply return it. */
-    if (node_query->id == id)
+    if (node_query->id == node_id)
     {
         return node_query;
     }
@@ -250,7 +250,7 @@ CourseNode * find_by_id(CourseList * list, int id)
     while (node_query->next_node != NULL)
     {
         /** If it's lucky enough and the this next node is what it wants, simply return it. */
-        if (node_query->next_node->id == id)
+        if (node_query->next_node->id == node_id)
         {
             /** Set the next node to the node it needs and return */
             node_query = node_query->next_node;
