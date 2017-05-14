@@ -3,3 +3,91 @@
 //
 
 #include "myrmit_parser.h"
+
+void run_cas_init(char * user_name, char * user_password, char * cookie_path)
+{
+
+
+
+}
+
+char * get_init_token(char * cookie_file_path)
+{
+    // Curl declaration
+    CURL * curl;
+    CURLcode response;
+
+    // Curl init
+    curl_global_init(CURL_GLOBAL_ALL);
+    curl = curl_easy_init();
+
+    // Detect if it successfully initialized
+    if(curl == NULL)
+    {
+        printf("[ERROR] libCurl init failed!\n");
+        exit(1);
+    }
+
+    // Curl response string declaration
+    CurlString * curlString;
+    curlString = malloc(sizeof(CurlString *));
+
+#ifdef RMITER_DEBUG_CURL
+
+    // Set debug mode
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+
+#endif
+
+    // Set Curl parameters
+    // Set SSO CAS login server URL
+    curl_easy_setopt(curl, CURLOPT_URL, RMIT_SSO_CAS_URL);
+
+    // Set write function pointer (see libcurl's example)
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, save_response_to_string);
+
+    // Set string struct to write
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)curlString);
+
+    // Set User Agent
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, FULL_USER_AGENT);
+
+    // Set cookie file output
+    curl_easy_setopt(curl, CURLOPT_COOKIEJAR, cookie_file_path);
+
+    // "Fire in the hole"!!!
+    response = curl_easy_perform(curl);
+
+    // See how's everything going...
+    if(response != CURLE_OK)
+    {
+        curl_easy_cleanup(curl);
+        return NULL;
+    }
+    else
+    {
+        return curlString->string;
+    }
+
+}
+
+
+// Came from libCurl example: https://curl.haxx.se/libcurl/c/getinmemory.html
+static size_t save_response_to_string(void *contents, size_t size, size_t nmemb, void *userp)
+{
+    size_t real_size = size * nmemb;
+    CurlString * string_mem = (CurlString *)userp;
+
+    string_mem->string = realloc(string_mem->string, string_mem->size + real_size + 1);
+    if(string_mem->string == NULL) {
+        /* out of memory! */
+        printf("not enough memory (realloc returned NULL)\n");
+        return 0;
+    }
+
+    memcpy(&(string_mem->string[string_mem->size]), contents, real_size);
+    string_mem->size += real_size;
+    string_mem->string[string_mem->size] = 0;
+
+    return real_size;
+}
