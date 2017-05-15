@@ -20,7 +20,7 @@
 #include "../cJSON/cJSON.h"
 
 // Google Gumbo HTML parsing library
-#include "../Gumbo/gumbo.h"
+#include <gumbo.h>
 
 #define NULL_CHAR_SPACE 1
 #define NEWLINE_CHAR_SPACE 1

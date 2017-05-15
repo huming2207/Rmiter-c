@@ -2,8 +2,8 @@
 // Created by Ming Hu on 8/5/17.
 //
 
+#include <gumbo.h>
 #include "myrmit_parser.h"
-#include "../Gumbo/gumbo.h"
 
 void run_cas_init(char * user_name, char * user_password, char * cookie_path)
 {
@@ -31,7 +31,7 @@ const char * get_init_token(char * cookie_file_path)
 
     // Curl response string declaration
     CurlString * curlString;
-    curlString = malloc(sizeof(CurlString *));
+    curlString = malloc(3072);
 
 #ifdef RMITER_DEBUG_CURL
 
@@ -73,7 +73,7 @@ const char * get_init_token(char * cookie_file_path)
 }
 
 
-const char * parse_login_ticket(char * raw_html)
+const char * parse_login_ticket_old(char * raw_html)
 {
     // Parse HTML into Gumbo memory structure
     GumboOutput * gumbo_output = gumbo_parse(raw_html);
@@ -85,9 +85,10 @@ const char * parse_login_ticket(char * raw_html)
     assert(gumbo_root->v.element.children.length >= 2);
 
     const GumboVector* root_children = &gumbo_root->v.element.children;
-    
+
     GumboNode* page_body = NULL;
-    
+
+
     for (int i = 0; i < root_children->length; ++i)
     {
         GumboNode* child = root_children->data[i];
@@ -101,7 +102,56 @@ const char * parse_login_ticket(char * raw_html)
     assert(page_body != NULL);
 
     GumboVector* page_body_children = &page_body->v.element.children;
-    
+
+    for (int i = 0; i < page_body_children->length; ++i)
+    {
+        GumboNode* child = page_body_children->data[i];
+
+        GumboAttribute * input_name_attr = gumbo_get_attribute(&child->v.element.attributes, "name");
+
+        if (child->type == GUMBO_NODE_ELEMENT && child->v.element.tag == GUMBO_TAG_INPUT && strcmp(input_name_attr->value, "lt") == 0)
+        {
+            GumboAttribute * input_value_attr = gumbo_get_attribute(&child->v.element.attributes, "value");
+            return input_name_attr->value;
+        }
+    }
+
+    return NULL;
+}
+
+const char * parse_login_ticket(char * raw_html)
+{
+    // Parse HTML into Gumbo memory structure
+    GumboOutput * gumbo_output = gumbo_parse(raw_html);
+
+    // Prepare the node
+    GumboNode * gumbo_root = gumbo_output->root;
+
+    assert(gumbo_root->type == GUMBO_NODE_ELEMENT);
+    assert(gumbo_root->v.element.children.length >= 2);
+
+    const GumboVector* root_children = &gumbo_root->v.element.children;
+
+    GumboNode* page_body = NULL;
+
+
+    for (int i = 0; i < root_children->length; ++i)
+    {
+        GumboNode* current_child_node = root_children->data[i];
+
+        GumboAttribute * input_name_attr = gumbo_get_attribute(&current_child_node->v.element.attributes, "name");
+
+        if(current_child_node->type == GUMBO_NODE_ELEMENT && current_child_node->v.element.tag == GUMBO_TAG_INPUT
+                && strcmp(input_name_attr->value, "lt"))
+        {
+            return input_name_attr->value;
+        }
+    }
+
+    assert(page_body != NULL);
+
+    GumboVector* page_body_children = &page_body->v.element.children;
+
     for (int i = 0; i < page_body_children->length; ++i)
     {
         GumboNode* child = page_body_children->data[i];
