@@ -29,4 +29,6 @@ const char * parse_login_ticket(char * raw_html);
 const char * find_attribute(GumboNode * current_node, GumboTag element_tag_type,
                             char * element_term_key, char * element_term_value, char * desired_result_key);
 
+char * get_myrmit_announcements(char * cookie_path);
+
 #endif //RMITER_C_MYRMIT_PARSER_H

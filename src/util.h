@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <assert.h>
+#include <unistd.h>
 
 // libcurl HTTP library (must be installed first)
 #include <curl/curl.h>

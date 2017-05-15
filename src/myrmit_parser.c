@@ -5,6 +5,48 @@
 #include <gumbo.h>
 #include "myrmit_parser.h"
 
+char * get_myrmit_announcements(char * cookie_path)
+{
+    // Curl declaration
+    CURL * curl = get_rmiter_curl(RMIT_MYRMIT_ANNOUNCEMENT_URL);
+    CURLcode response;
+
+    // Curl response string declaration
+    CurlString * curlString;
+    curlString = malloc(3072);
+
+    // Load cookies
+    curl_easy_setopt(curl, CURLOPT_COOKIEFILE, cookie_path);
+
+    // Set cookie file output
+    curl_easy_setopt(curl, CURLOPT_COOKIEJAR, cookie_path);
+
+    // Set string struct to write
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)curlString);
+
+    // Turn on auto redirection support
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+
+    // Set a longer timeout
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30L);
+
+    // "Fire in the hole"!!!
+    response = curl_easy_perform(curl);
+
+    // See how's everything going...
+    if(response != CURLE_OK)
+    {
+        printf("[ERROR] Oops, curl returns an error! Check your network!\n");
+        curl_easy_cleanup(curl);
+        return NULL;
+    }
+    else
+    {
+        curl_easy_cleanup(curl);
+        return(curlString->string);
+    }
+}
+
 void run_cas_init(char * user_name, char * user_password, char * cookie_path)
 {
     // Set the initial size of the POST string
@@ -64,8 +106,8 @@ void run_cas_init(char * user_name, char * user_password, char * cookie_path)
     }
     else
     {
-        curl_easy_cleanup(curl);
         printf("%s", curlString->string);
+        curl_easy_cleanup(curl);
     }
 
 }

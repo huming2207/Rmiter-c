@@ -72,7 +72,6 @@ CURL * get_rmiter_curl(char * url)
     CURL * curl;
 
     // Curl init
-    curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
 
     // Detect if it successfully initialized
