@@ -65,3 +65,61 @@ int str_to_int(char * str)
         return -32767;
     }
 }
+
+CURL * get_rmiter_curl(char * url)
+{
+    // Curl declaration
+    CURL * curl;
+
+    // Curl init
+    curl_global_init(CURL_GLOBAL_ALL);
+    curl = curl_easy_init();
+
+    // Detect if it successfully initialized
+    if(curl == NULL)
+    {
+        printf("[ERROR] libCurl init failed!\n");
+        exit(1);
+    }
+
+
+#ifdef RMITER_DEBUG_CURL
+
+    // Set debug mode
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+
+#endif
+
+    // Set Curl parameters
+    // Set SSO CAS login server URL
+    curl_easy_setopt(curl, CURLOPT_URL, url);
+
+    // Set User Agent
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, FULL_USER_AGENT);
+
+    // Set write function pointer (see libcurl's example)
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, save_response_to_string);
+
+    return curl;
+
+}
+
+// Came from libCurl example: https://curl.haxx.se/libcurl/c/getinmemory.html
+static size_t save_response_to_string(void *contents, size_t size, size_t nmemb, void *userp)
+{
+    size_t real_size = size * nmemb;
+    CurlString * string_mem = (CurlString *)userp;
+
+    string_mem->string = realloc(string_mem->string, string_mem->size + real_size + 1);
+    if(string_mem->string == NULL) {
+        /* out of memory! */
+        printf("not enough memory (realloc returned NULL)\n");
+        return 0;
+    }
+
+    memcpy(&(string_mem->string[string_mem->size]), contents, real_size);
+    string_mem->size += real_size;
+    string_mem->string[string_mem->size] = 0;
+
+    return real_size;
+}

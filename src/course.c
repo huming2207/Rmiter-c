@@ -16,6 +16,8 @@ Course * create_course(char * title, char * activity_type, char * course_id,
     course->end_time = end_time;
     course->start_time = start_time;
     course->title = title;
+
+    return course;
 }
 
 void delete_course(Course * course)

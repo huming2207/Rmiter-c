@@ -10,28 +10,23 @@
 // CAS login interface specified details
 #define RMIT_SSO_CAS_URL "https://sso-cas.rmit.edu.au/rmitcas/login"
 #define RMIT_SSO_CAS_POST_REFFERER RMIT_SSO_CAS_URL
-#define CHROME_USER_AGENT "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 "
-#define RMITER_USER_AGENT "rmiter-c/1.0"
-#define FULL_USER_AGENT CHROME_USER_AGENT RMITER_USER_AGENT
 
-// Debug flag
-#define RMITER_DEBUG_CURL 1
+// CAS login interface POST field keys
+#define POST_FIELD_USERNAME "username="
+#define POST_FIELD_PASSWORD "&password="
+#define POST_FIELD_LT_TOKEN "&lt="
+#define POST_FIELD_MISC "&execution=e1s1&_eventId=submit&submit=Login"
 
-
-typedef struct curl_string
-{
-    char * string;
-    int size;
-} CurlString;
+// myRMIT Portal API URLs
+#define RMIT_MYRMIT_ANNOUNCEMENT_URL "https://my.rmit.edu.au/service/announcements"
 
 void run_cas_init(char * user_name, char * user_password, char * cookie_path);
 
 const char * get_init_token(char * cookie_file_path);
 
-static size_t save_response_to_string(void *contents, size_t size, size_t nmemb, void *userp);
-
 const char * parse_login_ticket(char * raw_html);
 
-const char * find_login_ticket(GumboNode * current_node);
+const char * find_attribute(GumboNode * current_node, GumboTag element_tag_type,
+                            char * element_term_key, char * element_term_value, char * desired_result_key);
 
 #endif //RMITER_C_MYRMIT_PARSER_H
