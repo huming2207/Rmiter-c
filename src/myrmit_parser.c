@@ -67,57 +67,12 @@ const char * get_init_token(char * cookie_file_path)
     }
     else
     {
+        curl_easy_cleanup(curl);
         return parse_login_ticket(curlString->string);
     }
 
 }
 
-
-const char * parse_login_ticket_old(char * raw_html)
-{
-    // Parse HTML into Gumbo memory structure
-    GumboOutput * gumbo_output = gumbo_parse(raw_html);
-
-    // Prepare the node
-    GumboNode * gumbo_root = gumbo_output->root;
-
-    assert(gumbo_root->type == GUMBO_NODE_ELEMENT);
-    assert(gumbo_root->v.element.children.length >= 2);
-
-    const GumboVector* root_children = &gumbo_root->v.element.children;
-
-    GumboNode* page_body = NULL;
-
-
-    for (int i = 0; i < root_children->length; ++i)
-    {
-        GumboNode* child = root_children->data[i];
-        if (child->type == GUMBO_NODE_ELEMENT && child->v.element.tag == GUMBO_TAG_BODY)
-        {
-            page_body = child;
-            break;
-        }
-    }
-
-    assert(page_body != NULL);
-
-    GumboVector* page_body_children = &page_body->v.element.children;
-
-    for (int i = 0; i < page_body_children->length; ++i)
-    {
-        GumboNode* child = page_body_children->data[i];
-
-        GumboAttribute * input_name_attr = gumbo_get_attribute(&child->v.element.attributes, "name");
-
-        if (child->type == GUMBO_NODE_ELEMENT && child->v.element.tag == GUMBO_TAG_INPUT && strcmp(input_name_attr->value, "lt") == 0)
-        {
-            GumboAttribute * input_value_attr = gumbo_get_attribute(&child->v.element.attributes, "value");
-            return input_name_attr->value;
-        }
-    }
-
-    return NULL;
-}
 
 const char * parse_login_ticket(char * raw_html)
 {
@@ -125,48 +80,49 @@ const char * parse_login_ticket(char * raw_html)
     GumboOutput * gumbo_output = gumbo_parse(raw_html);
 
     // Prepare the node
-    GumboNode * gumbo_root = gumbo_output->root;
+    GumboNode * current_node = gumbo_output->root;
 
-    assert(gumbo_root->type == GUMBO_NODE_ELEMENT);
-    assert(gumbo_root->v.element.children.length >= 2);
+    // Find out the login token...
+    // Since the value inside gumbo memory structure will be freed later, we need to duplicate the login ticket.
+    const char * gumbo_login_ticket = find_login_ticket(current_node);
+    char * login_ticket = malloc(sizeof(char) * strlen(gumbo_login_ticket));
+    strcpy(login_ticket, gumbo_login_ticket);
 
-    const GumboVector* root_children = &gumbo_root->v.element.children;
-
-    GumboNode* page_body = NULL;
-
-
-    for (int i = 0; i < root_children->length; ++i)
-    {
-        GumboNode* current_child_node = root_children->data[i];
-
-        GumboAttribute * input_name_attr = gumbo_get_attribute(&current_child_node->v.element.attributes, "name");
-
-        if(current_child_node->type == GUMBO_NODE_ELEMENT && current_child_node->v.element.tag == GUMBO_TAG_INPUT
-                && strcmp(input_name_attr->value, "lt"))
-        {
-            return input_name_attr->value;
-        }
-    }
-
-    assert(page_body != NULL);
-
-    GumboVector* page_body_children = &page_body->v.element.children;
-
-    for (int i = 0; i < page_body_children->length; ++i)
-    {
-        GumboNode* child = page_body_children->data[i];
-
-        GumboAttribute * input_name_attr = gumbo_get_attribute(&child->v.element.attributes, "name");
-
-        if (child->type == GUMBO_NODE_ELEMENT && child->v.element.tag == GUMBO_TAG_INPUT && strcmp(input_name_attr->value, "lt") == 0)
-        {
-            GumboAttribute * input_value_attr = gumbo_get_attribute(&child->v.element.attributes, "value");
-            return input_name_attr->value;
-        }
-    }
-
-    return NULL;
+    // Free up memory
+    gumbo_destroy_output(&kGumboDefaultOptions, gumbo_output);
+    return login_ticket;
 }
+
+const char * find_login_ticket(GumboNode * current_node)
+{
+    const char * lt_token = NULL;
+
+    if (current_node->type != GUMBO_NODE_ELEMENT)
+    {
+        return NULL;
+    }
+
+    GumboAttribute* lt_attr = gumbo_get_attribute(&current_node->v.element.attributes, "name");
+
+    if (lt_attr != NULL && current_node->v.element.tag == GUMBO_TAG_INPUT && (strcmp(lt_attr->value, "lt") == 0))
+    {
+        lt_token = gumbo_get_attribute(&current_node->v.element.attributes, "value")->value;
+        return lt_token;
+    }
+
+    GumboVector* children = &current_node->v.element.children;
+
+    for (unsigned int i = 0; i < children->length; ++i)
+    {
+        lt_token = find_login_ticket(children->data[i]);
+
+        if(lt_token != NULL)
+        {
+            return lt_token;
+        }
+    }
+}
+
 
 // Came from libCurl example: https://curl.haxx.se/libcurl/c/getinmemory.html
 static size_t save_response_to_string(void *contents, size_t size, size_t nmemb, void *userp)

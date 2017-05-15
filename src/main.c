@@ -2,7 +2,7 @@
 
 int main()
 {
-    const char * login_ticket = get_init_token("cookie.txt");
-    printf("%s", login_ticket);
+    const char * lt_token = get_init_token("cookie.txt");
+    printf("%s", lt_token);
     return 0;
 }

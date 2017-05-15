@@ -32,4 +32,6 @@ static size_t save_response_to_string(void *contents, size_t size, size_t nmemb,
 
 const char * parse_login_ticket(char * raw_html);
 
+const char * find_login_ticket(GumboNode * current_node);
+
 #endif //RMITER_C_MYRMIT_PARSER_H
