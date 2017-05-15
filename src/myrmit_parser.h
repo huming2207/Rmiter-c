@@ -26,8 +26,10 @@ typedef struct curl_string
 
 void run_cas_init(char * user_name, char * user_password, char * cookie_path);
 
-char * get_init_token(char * cookie_file_path);
+const char * get_init_token(char * cookie_file_path);
 
 static size_t save_response_to_string(void *contents, size_t size, size_t nmemb, void *userp);
+
+const char * parse_login_ticket(char * raw_html);
 
 #endif //RMITER_C_MYRMIT_PARSER_H

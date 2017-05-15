@@ -6,5 +6,6 @@
 #define RMITER_C_MAIN_H
 
 #include "util.h"
+#include "myrmit_parser.h"
 
 #endif //RMITER_C_MAIN_H

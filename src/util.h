@@ -5,11 +5,13 @@
 #ifndef RMITER_C_UTIL_H
 #define RMITER_C_UTIL_H
 
+// Standard libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <assert.h>
 
 // libcurl HTTP library (must be installed first)
 #include <curl/curl.h>
