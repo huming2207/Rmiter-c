@@ -3,7 +3,7 @@
 //
 
 #include <gumbo.h>
-#include "myrmit_parser.h"
+#include "myrmit_handler.h"
 
 char * get_myrmit_announcements(char * cookie_path)
 {
@@ -51,7 +51,8 @@ void run_cas_init(char * user_name, char * user_password, char * cookie_path)
 {
     // Set the initial size of the POST string
     const char * lt_token = get_init_token(cookie_path);
-    char * post_field = malloc(strlen(POST_FIELD_USERNAME) + strlen(user_name) +
+    char * post_field = calloc(1,
+                               strlen(POST_FIELD_USERNAME) + strlen(user_name) +
                                strlen(POST_FIELD_PASSWORD) + strlen(user_password) +
                                strlen(POST_FIELD_LT_TOKEN) + strlen(lt_token) +
                                strlen(POST_FIELD_MISC));
@@ -78,7 +79,7 @@ void run_cas_init(char * user_name, char * user_password, char * cookie_path)
 
     // Curl response string declaration
     CurlString * curlString;
-    curlString = malloc(3072);
+    curlString = calloc(1, 3072);
 
     // Set Curl POST request
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_field);
