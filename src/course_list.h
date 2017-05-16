@@ -21,6 +21,7 @@ typedef struct course_list
     CourseNode * first_course;
     CourseNode * last_course;
     CourseNode * current_course;
+    struct tm * week_start_time;
     int length;
 } CourseList;
 

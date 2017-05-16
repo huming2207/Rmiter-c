@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include <unistd.h>
+#include <time.h>
 
 // libcurl HTTP library (must be installed first)
 #include <curl/curl.h>

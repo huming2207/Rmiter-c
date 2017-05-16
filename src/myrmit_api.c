@@ -13,7 +13,7 @@ char * myrmit_api_get_data(char * cookie_path, char * desired_url)
 
     // Curl response string declaration
     CurlString * curlString;
-    curlString = malloc(8192);
+    curlString = malloc(CURL_STRING_INIT_SIZE);
 
     // Load cookies
     curl_easy_setopt(curl, CURLOPT_COOKIEFILE, cookie_path);

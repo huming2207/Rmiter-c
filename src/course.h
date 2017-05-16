@@ -16,10 +16,11 @@ typedef struct course
     char * start_time;
     char * end_time;
     char * classroom;
+    char * date;
 } Course;
 
 Course * create_course(char * title, char * activity_type, char * course_id,
-                       char * start_time, char * end_time, char * classroom);
+                       char * start_time, char * end_time, char * classroom, char * date);
 
 void delete_course(Course * course);
 

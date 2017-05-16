@@ -12,10 +12,10 @@
 #define RMIT_SSO_CAS_POST_REFFERER RMIT_SSO_CAS_URL
 
 // CAS login interface POST field keys
-#define POST_FIELD_USERNAME "username="
-#define POST_FIELD_PASSWORD "&password="
-#define POST_FIELD_LT_TOKEN "&lt="
-#define POST_FIELD_MISC "&execution=e1s1&_eventId=submit&submit=Login"
+#define POST_FIELD_USERNAME             "username="
+#define POST_FIELD_PASSWORD             "&password="
+#define POST_FIELD_LT_TOKEN             "&lt="
+#define POST_FIELD_MISC                 "&execution=e1s1&_eventId=submit&submit=Login"
 
 // myRMIT Portal API URLs
 #define RMIT_MYRMIT_ANNOUNCEMENT_URL    "https://my.rmit.edu.au/service/announcements"
@@ -27,7 +27,8 @@
 #define RMIT_MYRMIT_GRADE_RESULT_URL    "https://my.rmit.edu.au/service/myexamresults/new"
 #define RMIT_MYRMIT_PERSONAL_DETAIL_URL "https://my.rmit.edu.au/service/mydetail"
 
-// Initial size
+// Initial size of CurlString
+#define CURL_STRING_INIT_SIZE           8192
 
 void myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_path);
 
