@@ -20,7 +20,7 @@
 // myRMIT Portal API URLs
 #define RMIT_MYRMIT_ANNOUNCEMENT_URL "https://my.rmit.edu.au/service/announcements"
 
-void run_cas_init(char * user_name, char * user_password, char * cookie_path);
+void myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_path);
 
 const char * get_init_token(char * cookie_file_path);
 
@@ -29,6 +29,6 @@ const char * parse_login_ticket(char * raw_html);
 const char * find_attribute(GumboNode * current_node, GumboTag element_tag_type,
                             char * element_term_key, char * element_term_value, char * desired_result_key);
 
-char * get_myrmit_announcements(char * cookie_path);
+char * myrmit_api_get_myrmit_announcements(char * cookie_path);
 
 #endif //RMITER_C_MYRMIT_PARSER_H

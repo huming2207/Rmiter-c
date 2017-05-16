@@ -3,9 +3,9 @@
 //
 
 #include <gumbo.h>
-#include "myrmit_handler.h"
+#include "myrmit_api.h"
 
-char * get_myrmit_announcements(char * cookie_path)
+char * myrmit_api_get_myrmit_announcements(char * cookie_path)
 {
     // Curl declaration
     CURL * curl = get_rmiter_curl(RMIT_MYRMIT_ANNOUNCEMENT_URL);
@@ -13,7 +13,7 @@ char * get_myrmit_announcements(char * cookie_path)
 
     // Curl response string declaration
     CurlString * curlString;
-    curlString = malloc(3072);
+    curlString = malloc(8192);
 
     // Load cookies
     curl_easy_setopt(curl, CURLOPT_COOKIEFILE, cookie_path);
@@ -42,12 +42,19 @@ char * get_myrmit_announcements(char * cookie_path)
     }
     else
     {
+        // Duplicate string since the original string pointer may be freed by curl_easy_cleanup()
+        char * response_str = calloc(strlen(curlString->string), sizeof(char));
+
+        // Do the duplication
+        strcpy(response_str, curlString->string);
+
+        // Clean up and return
         curl_easy_cleanup(curl);
-        return(curlString->string);
+        return response_str;
     }
 }
 
-void run_cas_init(char * user_name, char * user_password, char * cookie_path)
+void myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_path)
 {
     // Set the initial size of the POST string
     const char * lt_token = get_init_token(cookie_path);
