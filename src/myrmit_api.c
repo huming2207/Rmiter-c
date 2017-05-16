@@ -5,10 +5,10 @@
 #include <gumbo.h>
 #include "myrmit_api.h"
 
-char * myrmit_api_get_myrmit_announcements(char * cookie_path)
+char * myrmit_api_get_data(char * cookie_path, char * desired_url)
 {
     // Curl declaration
-    CURL * curl = get_rmiter_curl(RMIT_MYRMIT_ANNOUNCEMENT_URL);
+    CURL * curl = get_rmiter_curl(desired_url);
     CURLcode response;
 
     // Curl response string declaration
