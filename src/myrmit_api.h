@@ -30,7 +30,7 @@
 // Initial size of CurlString
 #define CURL_STRING_INIT_SIZE           8192
 
-void myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_path);
+bool myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_path);
 
 const char * get_init_token(char * cookie_file_path);
 

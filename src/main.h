@@ -8,4 +8,6 @@
 #include "util.h"
 #include "myrmit_parser.h"
 
+void demo_course();
+
 #endif //RMITER_C_MAIN_H

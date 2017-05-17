@@ -22,8 +22,6 @@ char * get_user_input(int length)
     char * user_input;
     user_input = malloc((size_t)(length + EXTRA_CHARS_SPACE));
 
-    printf("Enter your command: ");
-
     /** If user inputs nothing or some issues happens, return NULL to terminate the process */
     if(user_input == NULL)
     {
@@ -130,4 +128,17 @@ char * duplicate_string(char * original_string)
     char * new_string = calloc(strlen(original_string), sizeof(char));
     strcpy(new_string, original_string);
     return new_string;
+}
+
+
+bool file_exist(char * file_path)
+{
+    if(access(file_path, R_OK) != -1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

@@ -54,7 +54,7 @@ char * myrmit_api_get_data(char * cookie_path, char * desired_url)
     }
 }
 
-void myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_path)
+bool myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_path)
 {
     // Set the initial size of the POST string
     const char * lt_token = get_init_token(cookie_path);
@@ -86,7 +86,7 @@ void myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_p
 
     // Curl response string declaration
     CurlString * curlString;
-    curlString = calloc(1, 3072);
+    curlString = calloc(1, 8192);
 
     // Set Curl POST request
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_field);
@@ -114,8 +114,21 @@ void myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_p
     }
     else
     {
+
+#ifdef RMITER_DEBUG_CURL
         printf("%s", curlString->string);
+#endif
+
         curl_easy_cleanup(curl);
+
+        if(strstr(curlString->string, "Successful"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

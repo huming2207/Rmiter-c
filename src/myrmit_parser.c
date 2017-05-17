@@ -4,7 +4,7 @@
 
 #include "myrmit_parser.h"
 
-CourseList * myrmit_parse_course(char * raw_json)
+CourseList * myrmit_parse_course(char * raw_json, char * cookie_path)
 {
     // Convert raw json to root object
     cJSON * root_object = cJSON_Parse(raw_json);
