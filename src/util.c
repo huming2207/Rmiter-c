@@ -109,7 +109,7 @@ static size_t save_response_to_string(void *contents, size_t size, size_t nmemb,
     size_t real_size = size * nmemb;
     CurlString * string_mem = (CurlString *)userp;
 
-    string_mem->string = realloc(string_mem->string, string_mem->size + real_size + 1);
+    string_mem->string = realloc(string_mem->string, string_mem->size + real_size + 2);
     if(string_mem->string == NULL) {
         /* out of memory! */
         printf("not enough memory (realloc returned NULL)\n");
@@ -121,4 +121,13 @@ static size_t save_response_to_string(void *contents, size_t size, size_t nmemb,
     string_mem->string[string_mem->size] = 0;
 
     return real_size;
+}
+
+
+// Duplicate a new string from a existing string, in case if it gets freed unexpectedly.
+char * duplicate_string(char * original_string)
+{
+    char * new_string = calloc(strlen(original_string), sizeof(char));
+    strcpy(new_string, original_string);
+    return new_string;
 }

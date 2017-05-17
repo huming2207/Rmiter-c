@@ -13,7 +13,6 @@ typedef struct course_node
     int id;
     struct course_node * previous_node;
     struct course_node * next_node;
-    struct course_node * current_node;
 } CourseNode;
 
 typedef struct course_list

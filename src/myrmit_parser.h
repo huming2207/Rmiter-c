@@ -9,8 +9,9 @@
 #include "course_list.h"
 #include "course.h"
 #include "parser_common.h"
+#include "myrmit_api.h"
 
-CourseList * myrmit_parse_course(char * raw_json)
+CourseList * myrmit_parse_course(char * raw_json);
 
 
 #endif //RMITER_C_JSON_PARSER_H

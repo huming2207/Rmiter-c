@@ -8,7 +8,7 @@ Course * create_course(char * title, char * activity_type, char * course_id,
                        char * start_time, char * end_time, char * classroom, char * date)
 {
     // Do nothing but just malloc a pointer for course and set the sub-pointers
-    Course * course = malloc(sizeof(course));
+    Course * course = malloc(sizeof(Course));
 
     course->activity_type = activity_type;
     course->classroom = classroom;

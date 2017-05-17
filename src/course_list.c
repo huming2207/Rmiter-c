@@ -10,7 +10,7 @@ CourseList * create_course_list()
 
     if((list = malloc(sizeof(CourseList))) == NULL)
     {
-        printf("> Addressbook List memory allocation failed!\n");
+        printf("> Course List memory allocation failed!\n");
         return NULL;
     }
 
@@ -45,7 +45,7 @@ CourseNode * create_course_node(int id, Course * course)
     CourseNode * node;
     if((node = malloc(sizeof(*node))) == NULL)
     {
-        printf("Memory allocation for Addressbook node failed!\n");
+        printf("Memory allocation for Course Node failed!\n");
         return NULL;
     }
 
@@ -102,6 +102,7 @@ bool insert_node(CourseList * list, CourseNode * node)
         list->current_course = node;
 
 
+
         return true;
     }
     else
@@ -117,7 +118,7 @@ bool remove_current_node(CourseList * list)
      * Basically there are four situations:
      *
      * 1. Current node is between two non-null node
-     * 2. Current node does not have its next node (tail node)
+     * 2. Current node does not have its next node (last node)
      * 3. Current node does not have its previous node (head node)
      * 4. Current node does not have both next node and previous node, i.e. it is alone, single, no friend, no family etc...
      *
@@ -140,7 +141,7 @@ bool remove_current_node(CourseList * list)
         }
         else if(list->current_course->next_node == NULL && list->current_course->previous_node != NULL)
         {
-            /** Situation #2 - Current node does not have its next node (tail node) */
+            /** Situation #2 - Current node does not have its next node (last node) */
             /** Break its connection, then connect the previous node's next node to NULL */
             current_node = list->current_course;
             current_node->previous_node->next_node = NULL;
@@ -268,3 +269,68 @@ CourseNode * find_by_node_id(CourseList * list, int node_id)
     return NULL;
 }
 
+bool set_list_head(CourseList * list)
+{
+    CourseNode * current_node;
+    current_node = list->current_course;
+
+    /** Return true only if the list's current node is set */
+    if(current_node != NULL)
+    {
+        /** Loop until finds the "last next" node */
+        while(current_node->previous_node != NULL)
+        {
+            current_node = current_node->previous_node;
+        }
+
+        list->first_course = current_node;
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool set_list_last(CourseList * list)
+{
+    CourseNode * current_node;
+    current_node = list->current_course;
+
+    /** Return true only if the list's current node is set */
+    if(current_node != NULL)
+    {
+        /** Loop until finds the "last previous" node */
+        while(current_node->next_node != NULL)
+        {
+            current_node = current_node->next_node;
+        }
+
+        list->last_course = current_node;
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool set_list_head_last(CourseList * list)
+{
+    /**
+     * Set both head and last of the list.
+     *
+     * As a C# coder, I decide to make more syntactic sugars to make me feels comfortable lol...
+     */
+
+    if(set_list_head(list) == true && set_list_last(list) == true)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
