@@ -42,4 +42,10 @@ bool remove_current_node(CourseList * list);
 
 CourseNode * find_by_node_id(CourseList * list, int node_id);
 
+bool set_list_first(CourseList * list);
+
+bool set_list_last(CourseList * list);
+
+bool set_list_first_last(CourseList * list);
+
 #endif //RMITER_C_COURSE_LIST_H

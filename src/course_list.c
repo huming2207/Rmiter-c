@@ -119,7 +119,7 @@ bool remove_current_node(CourseList * list)
      *
      * 1. Current node is between two non-null node
      * 2. Current node does not have its next node (last node)
-     * 3. Current node does not have its previous node (head node)
+     * 3. Current node does not have its previous node (first node)
      * 4. Current node does not have both next node and previous node, i.e. it is alone, single, no friend, no family etc...
      *
      * By the way, is this one of the bonus mark lol?? Anyway I've done it and it is proved to work very smoothly. :)
@@ -150,7 +150,7 @@ bool remove_current_node(CourseList * list)
         }
         else if(list->current_course->next_node != NULL && list->current_course->previous_node == NULL)
         {
-            /** Situation #3 - Current node does not have its previous node (head node) */
+            /** Situation #3 - Current node does not have its previous node (first node) */
             /** Break its connection, then connect the next node's previous node to NULL */
             current_node = list->current_course;
             current_node->next_node->previous_node = NULL;
@@ -232,7 +232,7 @@ bool backward(CourseList * list, int backward)
 
 CourseNode * find_by_node_id(CourseList * list, int node_id)
 {
-    /** Declare a node pointer and set to head position */
+    /** Declare a node pointer and set to first position */
     CourseNode * node_query = list->first_course;
 
     /** If the node is null (even not initialized), return NULL result and stop the process */
@@ -241,7 +241,7 @@ CourseNode * find_by_node_id(CourseList * list, int node_id)
         return NULL;
     }
 
-    /** If it's lucky enough and the this list's head node is what it wants, simply return it. */
+    /** If it's lucky enough and the this list's first node is what it wants, simply return it. */
     if (node_query->id == node_id)
     {
         return node_query;
@@ -269,7 +269,7 @@ CourseNode * find_by_node_id(CourseList * list, int node_id)
     return NULL;
 }
 
-bool set_list_head(CourseList * list)
+bool set_list_first(CourseList * list)
 {
     CourseNode * current_node;
     current_node = list->current_course;
@@ -317,15 +317,15 @@ bool set_list_last(CourseList * list)
     }
 }
 
-bool set_list_head_last(CourseList * list)
+bool set_list_first_last(CourseList * list)
 {
     /**
-     * Set both head and last of the list.
+     * Set both first and last of the list.
      *
      * As a C# coder, I decide to make more syntactic sugars to make me feels comfortable lol...
      */
 
-    if(set_list_head(list) == true && set_list_last(list) == true)
+    if(set_list_first(list) == true && set_list_last(list) == true)
     {
         return true;
     }

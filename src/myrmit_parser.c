@@ -129,6 +129,9 @@ CourseList * myrmit_parse_course(char * raw_json)
     // Clean up cJSON
     cJSON_free(root_object);
 
+    // Generate list head and tail (i.e. set its first course node pointer and last course pointer)
+    set_list_first_last(new_course_list);
+
     // Return course list
     return new_course_list;
 }
