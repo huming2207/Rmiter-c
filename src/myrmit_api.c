@@ -183,7 +183,8 @@ const char * parse_login_ticket(char * raw_html)
     strcpy(login_ticket, gumbo_login_ticket);
 
     // Free up memory
-    gumbo_destroy_output(&kGumboDefaultOptions, gumbo_output);
+    // TODO: Somehow it fails to work in Linux environment, disable it first.
+    //gumbo_destroy_output(&kGumboDefaultOptions, gumbo_output);
     return login_ticket;
 }
 

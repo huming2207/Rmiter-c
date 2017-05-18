@@ -142,3 +142,35 @@ bool file_exist(char * file_path)
         return false;
     }
 }
+
+// Some compiler does not provide getpass() function or it fails to work somehow.
+// So I've found this as a alternative one.
+// This function comes from: http://stackoverflow.com/questions/32396188/better-alternative-for-getpass-function
+void get_password( char *pw, size_t pwsize)
+{
+    int i = 0;
+    int ch = 0;
+
+    printf ( "\033[8m");//conceal typing
+    while ( 1)
+    {
+        ch = getchar();
+        if ( ch == '\r' || ch == '\n' || ch == EOF)
+        {//get characters until CR or NL
+            break;
+        }
+        if ( i < pwsize - 1)
+        {//do not save pw longer than space in pw
+            pw[i] = ch;       //longer pw can be entered but excess is ignored
+            pw[i + 1] = '\0';
+        }
+        i++;
+    }
+    printf ( "\033[0A");//move cursor up one line
+    printf ( "\033[21C");//move cursor 21 places
+    while ( i) {
+        printf ( "*");//overwrite password on screen. this is still concealed
+        i--;
+    }
+    printf ( "\033[28m");//reveal typing
+}

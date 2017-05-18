@@ -59,4 +59,6 @@ char * duplicate_string(char * original_string);
 
 bool file_exist(char * file_path);
 
+void get_password( char *pw, size_t pwsize);
+
 #endif //RMITER_C_UTIL_H
