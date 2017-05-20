@@ -35,6 +35,14 @@ void ical_write_course_list(CourseList * list,  FILE * file)
 
     while(course_node != NULL)
     {
+        // Print something to show off lol...
+        printf("[INFO] Got course name: %s - %s; Course Type: %s; \n[INFO] Course classroom: %s; Course date: %s - %s @ %s.\n",
+               course_node->course->course_id, course_node->course->title,
+               course_node->course->activity_type,
+               course_node->course->classroom,
+               course_node->course->start_time, course_node->course->end_time, course_node->course->date);
+        printf("[INFO] Writing to calendar file...\n");
+
         // Add a new event
         fprintf(file, ICAL_EVENT_HEADER ICAL_NEWLINE);
 

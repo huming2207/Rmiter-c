@@ -37,25 +37,11 @@ void demo_course()
     sleep(1);
 
     // Print raw JSON for debugging.
-    printf("[TEST] ------ Announcement JSON  ------ \n%s\n ------ Announcement JSON  ------\n\n\n",
+    printf("[TEST] ------ Timetable JSON  ------ \n%s\n ------ Timetable JSON  ------\n\n\n",
            json_data);
 
     // Get the course list (in the current week)
     CourseList * mylist = myrmit_parse_course(json_data, "cookie.txt");
-
-    // Print the course list
-    CourseNode * course_node = mylist->last_course;
-
-    while(course_node != NULL)
-    {
-        printf("[TEST] Course name: %s - %s; Course Type: %s; \n[TEST] Course classroom: %s; Course date: %s - %s @ %s.\n\n",
-               course_node->course->course_id, course_node->course->title,
-               course_node->course->activity_type,
-               course_node->course->classroom,
-               course_node->course->start_time, course_node->course->end_time, course_node->course->date);
-
-        course_node = course_node->previous_node;
-    }
 
     // Write to file
     FILE * file = ical_init("test.ics");
