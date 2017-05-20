@@ -57,6 +57,11 @@ void demo_course()
         course_node = course_node->previous_node;
     }
 
+    // Write to file
+    FILE * file = ical_init("test.ics");
+    ical_write_course_list(mylist, file);
+    ical_close(file);
+
     // Clean up and finish
     curl_global_cleanup();
 }

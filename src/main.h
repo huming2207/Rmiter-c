@@ -7,6 +7,7 @@
 
 #include "util.h"
 #include "myrmit_parser.h"
+#include "ical_writer.h"
 
 void demo_course();
 

@@ -47,7 +47,7 @@ void ical_write_course_list(CourseList * list,  FILE * file)
         // Append the new UID
         fprintf(file, ICAL_EVENT_UID_KEY);
         fprintf(file, "%s", new_uid_str);
-        fprintf(file, ICAL_NEWLINE);
+        fprintf(file, ICAL_EVENT_UID_DOMAIN ICAL_NEWLINE);
 
         // Get time struct from string
         struct tm * start_time_struct = parse_time_str(course_node->course->date, course_node->course->start_time);
@@ -63,7 +63,7 @@ void ical_write_course_list(CourseList * list,  FILE * file)
         // Write time to file
         fprintf(file, ICAL_START_DATE_KEY);
         fprintf(file, start_time_str);
-        fprintf(file, ICAL_END_DATE_KEY);
+        fprintf(file, ICAL_NEWLINE ICAL_END_DATE_KEY);
         fprintf(file, end_time_str);
         fprintf(file, ICAL_NEWLINE);
 
@@ -74,7 +74,7 @@ void ical_write_course_list(CourseList * list,  FILE * file)
 
         // Write details to description
         fprintf(file, ICAL_DESCRIPTION_KEY);
-        fprintf(file, "Course name: %s - %s; Course Type: %s; \n[TEST] Course classroom: %s; Course date: %s - %s @ %s.",
+        fprintf(file, "Course name: %s - %s; Course Type: %s; Course classroom: %s; Course date: %s - %s @ %s.",
                course_node->course->course_id, course_node->course->title,
                course_node->course->activity_type,
                course_node->course->classroom,
@@ -98,7 +98,7 @@ void ical_write_course_list(CourseList * list,  FILE * file)
 
 void ical_close(FILE * file)
 {
-    fprintf(file, ICAL_FOOTER);
+    fprintf(file, ICAL_FOOTER ICAL_NEWLINE);
     fflush(file);
     fclose(file);
 }
