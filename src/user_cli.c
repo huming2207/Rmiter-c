@@ -12,7 +12,14 @@ bool require_user_login(char * cookie_path)
     printf("[WARN]     You password entry WILL BE ECHOED WHEN YOU INPUT!!!\n\n");
     printf("[INFO] Username: ");
     char * user_id = get_user_input(10);
+
+#ifdef __DARWIN__
     char * user_password = getpass("[INFO] Password: ");
+#else
+    printf("[INFO] Password: ");
+    char user_password[20];
+    get_password(user_password, 20);
+#endif
 
     return myrmit_api_cas_init(user_id, user_password, cookie_path);
 }
