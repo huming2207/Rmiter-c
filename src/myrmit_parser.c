@@ -68,31 +68,31 @@ CourseList * myrmit_parse_course(char * raw_json, char * cookie_path)
                 {
                     if (strcmp(current_course_sub_object->string, "activityType") == 0)
                     {
-                        activity_type = duplicate_string(current_course_sub_object->valuestring);
+                        activity_type = strdup(current_course_sub_object->valuestring);
                     }
                     else if (strcmp(current_course_sub_object->string, "catalogNumber") == 0)
                     {
-                        catalog_number = duplicate_string(current_course_sub_object->valuestring);
+                        catalog_number = strdup(current_course_sub_object->valuestring);
                     }
                     else if (strcmp(current_course_sub_object->string, "endDisplayable") == 0)
                     {
-                        end_displayable_time = duplicate_string(current_course_sub_object->valuestring);
+                        end_displayable_time = strdup(current_course_sub_object->valuestring);
                     }
                     else if (strcmp(current_course_sub_object->string, "startDisplayable") == 0)
                     {
-                        start_displayable_time = duplicate_string(current_course_sub_object->valuestring);
+                        start_displayable_time = strdup(current_course_sub_object->valuestring);
                     }
                     else if (strcmp(current_course_sub_object->string, "title") == 0)
                     {
-                        title_string = duplicate_string(current_course_sub_object->valuestring);
+                        title_string = strdup(current_course_sub_object->valuestring);
                     }
                     else if (strcmp(current_course_sub_object->string, "subject") == 0)
                     {
-                        subject_string = duplicate_string(current_course_sub_object->valuestring);
+                        subject_string = strdup(current_course_sub_object->valuestring);
                     }
                     else if (strcmp(current_course_sub_object->string, "location") == 0)
                     {
-                        classroom_string = duplicate_string(current_course_sub_object->valuestring);
+                        classroom_string = strdup(current_course_sub_object->valuestring);
                     }
 
                     current_course_sub_object = current_course_sub_object->next;
@@ -104,7 +104,7 @@ CourseList * myrmit_parse_course(char * raw_json, char * cookie_path)
 
                 if (strcmp(current_weekly_child_object->next->string, "dayDisplayable") == 0)
                 {
-                    date_string = duplicate_string(current_weekly_child_object->next->valuestring);
+                    date_string = strdup(current_weekly_child_object->next->valuestring);
                 }
 
                 // Create course

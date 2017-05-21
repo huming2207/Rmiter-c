@@ -9,6 +9,7 @@
 #include "myrmit_parser.h"
 #include "ical_writer.h"
 
-void demo_course();
+
+void crawl_all_courses(struct tm * time, char * file_path);
 
 #endif //RMITER_C_MAIN_H

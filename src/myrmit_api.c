@@ -14,6 +14,7 @@ char * myrmit_api_get_data(char * cookie_path, char * desired_url)
     // Curl response string declaration
     CurlString * curlString;
     curlString = malloc(CURL_STRING_INIT_SIZE);
+    curlString->size = 0;
 
     // Load cookies
     curl_easy_setopt(curl, CURLOPT_COOKIEFILE, cookie_path);
@@ -37,18 +38,29 @@ char * myrmit_api_get_data(char * cookie_path, char * desired_url)
     if(response != CURLE_OK)
     {
         printf("[ERROR] Oops, curl returns an error! Check your network!\n");
+        free(curlString->string);
+        free(curlString);
         curl_easy_cleanup(curl);
+        myrmit_api_get_data(cookie_path, desired_url);
         return NULL;
     }
     else
     {
-        // Duplicate string since the original string pointer may be freed by curl_easy_cleanup()
-        char * response_str = calloc(strlen(curlString->string), sizeof(char));
+        if(curlString->string == NULL || strlen(curlString->string) < 10)
+        {
+            printf("[ERROR] Oops, curl returns an error! Check your network!\n");
+            free(curlString->string);
+            free(curlString);
+            curl_easy_cleanup(curl);
+            myrmit_api_get_data(cookie_path, desired_url);
+        }
 
-        // Do the duplication
-        strcpy(response_str, curlString->string);
+        // Duplicate string since the original string pointer may be freed by curl_easy_cleanup()
+        char * response_str = strdup(curlString->string);
 
         // Clean up and return
+        free(curlString->string);
+        free(curlString);
         curl_easy_cleanup(curl);
         return response_str;
     }
@@ -86,7 +98,8 @@ bool myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_p
 
     // Curl response string declaration
     CurlString * curlString;
-    curlString = calloc(1, 8192);
+    curlString = malloc(CURL_STRING_INIT_SIZE);
+    curlString->size = 0;
 
     // Set Curl POST request
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_field);
@@ -142,7 +155,8 @@ const char * get_init_token(char * cookie_file_path)
 
     // Curl response string declaration
     CurlString * curlString;
-    curlString = malloc(3072);
+    curlString = malloc(CURL_STRING_INIT_SIZE);
+    curlString->size = 0;
 
     // Set cookie file output
     curl_easy_setopt(curl, CURLOPT_COOKIEJAR, cookie_file_path);

@@ -19,6 +19,8 @@ struct tm * parse_time_str(char * date, char * time);
 
 
 // RFC5545 iCalendar content macros
+// For more details, please refer to Wikipedia, or this: http://www.kanzaki.com/docs/ical/description.html
+
 // New line (CRLF)
 #define ICAL_NEWLINE            "\r\n"
 

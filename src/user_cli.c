@@ -13,7 +13,8 @@ bool require_user_login(char * cookie_path)
     printf("[INFO] Username: ");
     char * user_id = get_user_input(10);
 
-#ifdef __DARWIN__
+// Use getpass() to retrieve user password if this program runs in macOS
+#ifdef __MACH__
     char * user_password = getpass("[INFO] Password: ");
 #else
     printf("[INFO] Password: ");

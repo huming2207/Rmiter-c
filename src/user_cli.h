@@ -10,4 +10,6 @@
 
 bool require_user_login(char * cookie_path);
 
+void auto_crawl_all_weeks();
+
 #endif //RMITER_C_USER_CLI_H
