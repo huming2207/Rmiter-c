@@ -8,6 +8,7 @@
 char * myrmit_api_get_data(char * cookie_path, char * desired_url)
 {
     // Curl declaration
+    curl_global_init(CURL_GLOBAL_ALL);
     CURL * curl = get_rmiter_curl(desired_url);
     CURLcode response;
 
@@ -62,6 +63,7 @@ char * myrmit_api_get_data(char * cookie_path, char * desired_url)
         free(curlString->string);
         free(curlString);
         curl_easy_cleanup(curl);
+        curl_global_cleanup();
         return response_str;
     }
 }
@@ -93,6 +95,7 @@ bool myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_p
 #endif
 
     // Curl declaration
+    curl_global_init(CURL_GLOBAL_ALL);
     CURL * curl = get_rmiter_curl(RMIT_SSO_CAS_URL);
     CURLcode response;
 
@@ -133,6 +136,7 @@ bool myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_p
 #endif
 
         curl_easy_cleanup(curl);
+        curl_global_cleanup();
 
         if(strstr(curlString->string, "Successful"))
         {
@@ -150,6 +154,7 @@ bool myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_p
 const char * get_init_token(char * cookie_file_path)
 {
     // Curl declaration
+    curl_global_init(CURL_GLOBAL_ALL);
     CURL * curl = get_rmiter_curl(RMIT_SSO_CAS_URL);
     CURLcode response;
 
@@ -176,6 +181,7 @@ const char * get_init_token(char * cookie_file_path)
     else
     {
         curl_easy_cleanup(curl);
+        curl_global_cleanup();
         return parse_login_ticket(curlString->string);
     }
 

@@ -88,8 +88,6 @@ int main(int argc, char ** argv)
 
 void crawl_all_courses(struct tm * time, char * file_path)
 {
-    curl_global_init(CURL_GLOBAL_ALL);
-
     // If cookie cache file does not exist, ask user login and create one.
     if(!file_exist("cookie.txt"))
     {
@@ -152,6 +150,4 @@ void crawl_all_courses(struct tm * time, char * file_path)
     {
         printf("[WARN] Cookie cache cannot be removed. Please remove it manually to protect your privacy.\n");
     }
-
-    curl_global_cleanup();
 }

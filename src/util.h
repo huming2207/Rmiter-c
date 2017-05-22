@@ -37,7 +37,7 @@
 #define FULL_USER_AGENT CHROME_USER_AGENT RMITER_USER_AGENT
 
 // Debug flag
-#define RMITER_DEBUG_CURL 1
+//#define RMITER_DEBUG_CURL 1
 
 typedef struct curl_string
 {

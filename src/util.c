@@ -119,6 +119,8 @@ static size_t save_response_to_string(void *contents, size_t size, size_t nmemb,
     string_mem->size += real_size;
     string_mem->string[string_mem->size] = 0;
 
+    printf("[DEBUG] String buffer length %d, got %s\n", (int)string_mem->size, string_mem->string);
+
     return real_size;
 }
 
