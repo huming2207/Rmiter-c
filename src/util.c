@@ -102,10 +102,10 @@ CURL * get_rmiter_curl(char * url)
 }
 
 // Came from libCurl example: https://curl.haxx.se/libcurl/c/getinmemory.html
-static size_t save_response_to_string(void *contents, size_t size, size_t nmemb, void *userp)
+static size_t save_response_to_string(void *contents, size_t size, size_t nmemb, CurlString * userp)
 {
     size_t real_size = size * nmemb;
-    CurlString * string_mem = (CurlString *)userp;
+    CurlString * string_mem = userp;
 
     string_mem->string = realloc(string_mem->string, string_mem->size + real_size + 1);
     if(string_mem->string == NULL)

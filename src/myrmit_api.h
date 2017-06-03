@@ -28,7 +28,7 @@
 #define RMIT_MYRMIT_PERSONAL_DETAIL_URL "https://my.rmit.edu.au/service/mydetail"
 
 // Initial size of CurlString
-#define CURL_STRING_INIT_SIZE           8192
+#define CURL_STRING_INIT_SIZE           100
 
 bool myrmit_api_cas_init(char * user_name, char * user_password, char * cookie_path);
 

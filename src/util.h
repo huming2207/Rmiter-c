@@ -37,7 +37,7 @@
 #define FULL_USER_AGENT CHROME_USER_AGENT RMITER_USER_AGENT
 
 // Debug flag
-//#define RMITER_DEBUG_CURL 1
+#define RMITER_DEBUG_CURL 1
 
 typedef struct curl_string
 {
@@ -54,7 +54,7 @@ int str_to_int(char * str);
 
 CURL * get_rmiter_curl(char * url);
 
-static size_t save_response_to_string(void *contents, size_t size, size_t nmemb, void *userp);
+static size_t save_response_to_string(void *contents, size_t size, size_t nmemb, CurlString * userp);
 
 bool file_exist(char * file_path);
 
