@@ -61,12 +61,13 @@ make
 ## To-do list
 
 - [x] Login simulation
-- [-] ICS file writing
-- [-] Timetable parsing
+- [x] ICS file writing
+- [x] Timetable parsing
 - [ ] Timetable iterating for whole semester 
 
 ## Acknowledgements
 
 - Google for their [Gumbo-parser](https://github.com/google/gumbo-parser)
 - Curl and [Libcurl](https://curl.haxx.se/libcurl/c/libcurl.html)
+- cJSON library (in `./cJSON`)
 - All the teachers of [Advanced Programming Techniques](http://www1.rmit.edu.au/courses/004068) who taught me ANSI C programming 😂
